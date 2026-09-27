@@ -19,16 +19,10 @@
   header{margin-bottom:28px}
   h1{font-size:26px; margin:0 0 6px}
   .sub{color:var(--muted); font-size:15px; margin:0}
-  section{
-    background:var(--card); border:1px solid var(--line); border-radius:14px;
-    padding:24px; margin-bottom:24px;
-  }
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:24px; margin-bottom:24px}
   h2{font-size:20px; margin:0 0 4px; display:flex; align-items:center; gap:10px}
-  .num{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:28px; height:28px; border-radius:50%; background:var(--ink);
-    color:var(--paper); font-size:15px; flex:none;
-  }
+  .num{display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;
+       border-radius:50%; background:var(--ink); color:var(--paper); font-size:15px; flex:none}
   .hint{color:var(--muted); font-size:14px; margin:6px 0 16px}
   .frame{border:1px solid var(--line); border-radius:10px; overflow:hidden; height:520px; background:#fff}
   .frame iframe{width:100%; height:100%; border:0; display:block}
@@ -42,20 +36,15 @@
     border-radius:9px; font:inherit; font-size:15px; background:#fff; color:var(--ink);
   }
   textarea{min-height:80px; resize:vertical}
-  button{
-    font:inherit; font-weight:700; padding:12px 22px; border-radius:10px;
-    border:1px solid var(--ink); background:var(--ink); color:var(--paper);
-    cursor:pointer; margin:16px 8px 0 0;
-  }
+  button{font:inherit; font-weight:700; padding:12px 22px; border-radius:10px;
+         border:1px solid var(--ink); background:var(--ink); color:var(--paper);
+         cursor:pointer; margin:16px 8px 0 0}
   button.ghost{background:transparent; color:var(--ink)}
-  ol,ul{padding-left:22px; margin:10px 0}
-  li{margin:6px 0}
-  code{background:#F0EDE2; padding:2px 6px; border-radius:5px; font-family:Consolas,monospace; font-size:14px}
+  button:disabled{opacity:.4; cursor:not-allowed}
   .log{margin-top:18px; font-size:14px}
   .log div{padding:9px 12px; border-left:3px solid var(--teal); background:#F4F2EA; margin-bottom:6px; word-break:break-all}
   .log div.bad{border-left-color:var(--danger); background:#FBF0ED}
   .note{background:#FBF4E0; border:1px solid #E8D9A8; border-radius:10px; padding:14px 16px; font-size:14px; margin-top:16px}
-  .step{background:#EDF4F2; border:1px solid #BFDAD5; border-radius:10px; padding:14px 16px; font-size:14px; margin-top:16px}
   .row{display:flex; gap:14px; flex-wrap:wrap}
   .row > *{flex:1; min-width:200px}
   @media (max-width:600px){ body{padding:16px 12px} section{padding:18px} .frame{height:420px} }
@@ -66,18 +55,18 @@
 
 <header>
   <h1>수행평가지 사전 확인</h1>
-  <p class="sub">두 가지만 확인합니다 — 페이지 안에서 CODAP이 열리는가, 입력한 내용이 스프레드시트로 넘어가는가.</p>
+  <p class="sub">CODAP이 페이지 안에서 열리는가, 입력한 내용이 스프레드시트로 조용히 넘어가는가.</p>
 </header>
 
 <!-- ───────── 1. CODAP ───────── -->
 <section>
-  <h2><span class="num">1</span> CODAP이 이 페이지 안에서 열리는가</h2>
-  <p class="hint">CODAP은 프로그램이 커서 <b>처음 뜰 때 10~20초</b> 걸립니다. 흰 화면이어도 30초는 기다려 주세요.</p>
+  <h2><span class="num">1</span> CODAP</h2>
+  <p class="hint">처음 뜰 때 10~20초 걸립니다. 흰 화면이어도 30초는 기다려 주세요.</p>
   <div id="codapBadge" class="badge wait">불러오는 중… (0초)</div>
   <div id="fileWarn" class="note" style="display:none">
-    <b>이 파일은 컴퓨터에 저장된 파일로 열려 있습니다.</b>
-    브라우저가 로컬 파일 안에서는 외부 사이트의 저장 기능을 막아, 흰 화면만 나올 수 있습니다.
-    아래 <b>새 창에서 CODAP 열기</b>는 이 경우에도 정상 동작합니다.
+    <b>이 파일은 컴퓨터에 저장된 파일(file://)로 열려 있습니다.</b>
+    브라우저가 로컬 파일 안에서는 외부 사이트의 저장 기능을 막아, CODAP이 흰 화면으로 멈출 수 있습니다.
+    웹 주소로 올려서 쓰면 이 문제가 없습니다.
   </div>
   <div class="frame">
     <iframe id="codapFrame" src="https://codap.concord.org/app/" title="CODAP"></iframe>
@@ -86,23 +75,14 @@
   <button id="codapReload" class="ghost">다시 불러오기</button>
 </section>
 
-<!-- ───────── 2. 스프레드시트 전송 ───────── -->
+<!-- ───────── 2. 전송 ───────── -->
 <section>
-  <h2><span class="num">2</span> 입력한 내용이 스프레드시트로 넘어가는가</h2>
-  <p class="hint">제출을 누르면 <b>새 탭</b>이 열리면서 저장되고, 그 탭에 "제출되었습니다" 화면이 뜹니다.</p>
+  <h2><span class="num">2</span> 스프레드시트로 전송</h2>
+  <p class="hint">제출하면 새 탭 없이 조용히 저장되고, 저장된 줄 번호를 확인해서 보여 줍니다.</p>
 
-  <div class="step">
-    <b>학교(Workspace) 계정이라 도메인 제한이 걸려 있어도 이 방식은 동작합니다.</b>
-    다만 제출하는 사람이 <u>학교 구글 계정으로 로그인되어 있어야</u> 합니다.
-    그래서 제출 전에 아래 <b>1단계 로그인 확인</b>을 한 번 눌러 주세요.
-  </div>
+  <div id="conn" class="badge wait">연결 확인 중…</div>
 
-  <label for="url">웹 앱 URL (…/exec)</label>
-  <input type="text" id="url" placeholder="https://script.google.com/a/macros/학교도메인/s/AKfy...../exec">
-
-  <button id="openBtn" class="ghost">1단계 · 로그인 확인 (새 탭)</button>
-
-  <div class="row" style="margin-top:20px">
+  <div class="row">
     <div>
       <label for="sid">학번</label>
       <input type="text" id="sid" placeholder="10203">
@@ -112,17 +92,14 @@
       <input type="text" id="sname" placeholder="홍길동">
     </div>
   </div>
-  <label for="memo">메모 (아무 문장이나)</label>
+  <label for="memo">메모</label>
   <textarea id="memo" placeholder="전송 확인용 테스트입니다."></textarea>
 
-  <button id="sendBtn">2단계 · 제출하기 (새 탭에서 저장)</button>
+  <button id="sendBtn">제출하기</button>
+  <button id="loginBtn" class="ghost" style="display:none">구글 로그인하기 (새 탭)</button>
+  <button id="tabBtn" class="ghost" style="display:none">새 탭으로 제출 (예비용)</button>
 
   <div class="log" id="log"></div>
-
-  <div class="note">
-    <b>"제출되었습니다" 대신 구글 로그인 화면이 뜬다면</b> — 그 화면에서 학교 계정으로 로그인한 뒤,
-    이 페이지로 돌아와 <b>다시 제출</b>하세요. 한 번 로그인하면 그 다음부터는 바로 저장됩니다.
-  </div>
 </section>
 
 </div>
@@ -131,24 +108,27 @@
 (function () {
   "use strict";
 
-  /* ---------- 1. CODAP ---------- */
+  /* ══════════════════════════════════════════════════════════
+     설정 — 배포 주소를 바꿀 때만 이 한 줄을 고치세요
+     ══════════════════════════════════════════════════════════ */
+  var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxiQpYE7w_9GgAiB01bCTzKCA9H5d6-NNj8kXsVC7YprNDqzO2dMejbfkZ1sqwW-FTh/exec';
+
+
+  /* ═══════ 1. CODAP ═══════ */
   var badge = document.getElementById('codapBadge');
   var frame = document.getElementById('codapFrame');
-  var codapLoaded = false;
-  var secs = 0;
+  var codapLoaded = false, secs = 0;
 
-  if (location.protocol === 'file:') {
-    document.getElementById('fileWarn').style.display = '';
-  }
+  if (location.protocol === 'file:') document.getElementById('fileWarn').style.display = '';
 
   var tick = setInterval(function () {
-    secs += 1;
+    secs++;
     if (!codapLoaded) badge.textContent = '불러오는 중… (' + secs + '초)';
     if (secs >= 30) {
       clearInterval(tick);
       if (!codapLoaded) {
         badge.className = 'badge bad';
-        badge.textContent = '30초 동안 열리지 않았습니다 — 아래 [새 창에서 CODAP 열기]로 확인해 보세요';
+        badge.textContent = '30초 동안 열리지 않았습니다 — [새 창에서 CODAP 열기]로 확인해 보세요';
       }
     }
   }, 1000);
@@ -156,7 +136,7 @@
   frame.addEventListener('load', function () {
     codapLoaded = true;
     badge.className = 'badge ok';
-    badge.textContent = '주소는 불러왔습니다 (' + secs + '초). 화면에 CODAP 메뉴가 보이는지 눈으로 확인하세요.';
+    badge.textContent = '주소를 불러왔습니다 (' + secs + '초). 화면에 CODAP 메뉴가 보이는지 확인하세요.';
   });
 
   document.getElementById('codapWindow').addEventListener('click', function () {
@@ -169,69 +149,126 @@
     frame.src = 'https://codap.concord.org/app/?t=' + Date.now();
   });
 
-  /* ---------- 2. 전송 ---------- */
-  var KEY = 'codap_probe_url_v3';
-  var urlInput = document.getElementById('url');
+  /* ═══════ 2. 전송 ═══════ */
+  var conn = document.getElementById('conn');
   var log = document.getElementById('log');
-
-  try {
-    var saved = localStorage.getItem(KEY);
-    if (saved) urlInput.value = saved;
-  } catch (e) {}
+  var loginBtn = document.getElementById('loginBtn');
+  var tabBtn = document.getElementById('tabBtn');
 
   function say(msg, bad) {
     var d = document.createElement('div');
     if (bad) d.className = 'bad';
-    var t = new Date();
-    var p = function (n) { return ('0' + n).slice(-2); };
+    var t = new Date(), p = function (n) { return ('0' + n).slice(-2); };
     d.textContent = '[' + p(t.getHours()) + ':' + p(t.getMinutes()) + ':' + p(t.getSeconds()) + '] ' + msg;
     log.insertBefore(d, log.firstChild);
   }
 
-  function getUrl() {
-    var u = urlInput.value.trim();
-    if (!u) { say('웹 앱 URL을 먼저 붙여넣으세요.', true); return null; }
-    if (u.indexOf('script.google.com') < 0 || u.indexOf('/exec') < 0) {
-      say('주소가 이상합니다. script.google.com 으로 시작하고 /exec 로 끝나야 합니다.', true);
-      return null;
-    }
-    try { localStorage.setItem(KEY, u); } catch (e) {}
-    return u;
+  function setConn(kind, text) {
+    conn.className = 'badge ' + kind;
+    conn.textContent = text;
   }
 
-  document.getElementById('openBtn').addEventListener('click', function () {
-    var u = getUrl();
-    if (!u) return;
-    window.open(u, '_blank');
-    say('새 탭을 열었습니다. "연결 확인 완료" 화면이 보이면 준비 끝입니다. 로그인 화면이 뜨면 로그인하세요.');
+  /* JSONP — 로그인 여부와 저장 결과를 되묻는다 (CORS 제약 없음) */
+  var seq = 0;
+  function ask(params, timeoutMs) {
+    return new Promise(function (resolve, reject) {
+      var cb = '__cb' + (++seq) + '_' + Date.now();
+      var sc = document.createElement('script');
+      var done = false;
+
+      window[cb] = function (data) { done = true; cleanup(); resolve(data); };
+      function cleanup() {
+        try { delete window[cb]; } catch (e) { window[cb] = undefined; }
+        if (sc.parentNode) sc.parentNode.removeChild(sc);
+      }
+
+      var qs = ['callback=' + cb, 't=' + Date.now()];
+      Object.keys(params || {}).forEach(function (k) {
+        if (params[k] !== undefined && params[k] !== '') {
+          qs.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+        }
+      });
+      sc.src = WEBAPP_URL + (WEBAPP_URL.indexOf('?') < 0 ? '?' : '&') + qs.join('&');
+      sc.onerror = function () { if (!done) { cleanup(); reject(new Error('network')); } };
+      document.head.appendChild(sc);
+      setTimeout(function () { if (!done) { cleanup(); reject(new Error('timeout')); } }, timeoutMs || 12000);
+    });
+  }
+
+  function checkConnection() {
+    setConn('wait', '연결 확인 중…');
+    return ask({}, 12000).then(function (d) {
+      if (d && d.ok) {
+        setConn('ok', '연결됨 · 현재 ' + (d.rows || 0) + '건 저장되어 있음');
+        loginBtn.style.display = 'none';
+        tabBtn.style.display = 'none';
+        return true;
+      }
+      setConn('bad', '응답이 이상합니다');
+      return false;
+    }).catch(function () {
+      setConn('bad', '연결 실패 — 구글 로그인이 필요합니다');
+      loginBtn.style.display = '';
+      return false;
+    });
+  }
+
+  checkConnection();
+
+  loginBtn.addEventListener('click', function () {
+    window.open(WEBAPP_URL, '_blank');
+    say('새 탭에서 학교 계정으로 로그인한 뒤, 이 페이지로 돌아오세요.');
+    setTimeout(checkConnection, 5000);
   });
 
-  document.getElementById('sendBtn').addEventListener('click', function () {
-    var u = getUrl();
-    if (!u) return;
-
+  function collect() {
     var sid = document.getElementById('sid').value.trim();
     var name = document.getElementById('sname').value.trim();
     var memo = document.getElementById('memo').value.trim();
-    if (!sid || !name) { say('학번과 이름을 입력하세요.', true); return; }
+    if (!sid || !name) { say('학번과 이름을 입력하세요.', true); return null; }
+    return { '학번': sid, '이름': name, '메모': memo };
+  }
 
-    var payload = JSON.stringify({ '학번': sid, '이름': name, '메모': memo });
+  document.getElementById('sendBtn').addEventListener('click', function () {
+    var data = collect(); if (!data) return;
 
-    // 새 탭으로 POST — 최상위 이동이라 구글 로그인 세션이 그대로 쓰입니다
-    var form = document.createElement('form');
-    form.action = u;
-    form.method = 'POST';
-    form.target = '_blank';
-    form.style.display = 'none';
-    var input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'payload';
-    input.value = payload;
-    form.appendChild(input);
-    document.body.appendChild(form);
-    form.submit();
-    setTimeout(function () { form.remove(); }, 1000);
+    var btn = this;
+    btn.disabled = true;
+    say('전송 중…');
 
+    var body = new URLSearchParams();
+    body.append('payload', JSON.stringify(data));
+
+    fetch(WEBAPP_URL, { method: 'POST', mode: 'no-cors', credentials: 'include', body: body })
+      .then(function () { return new Promise(function (r) { setTimeout(r, 1800); }); })
+      .then(function () { return ask({ sid: data['학번'] }, 12000); })
+      .then(function (d) {
+        if (d && d.found) {
+          say('저장 확인 — ' + d.row + '번째 줄 · ' + (d.time || ''));
+          setConn('ok', '연결됨 · 현재 ' + (d.rows || 0) + '건 저장되어 있음');
+        } else {
+          say('보내긴 했는데 시트에서 찾지 못했습니다. 예비용 버튼으로 다시 시도해 보세요.', true);
+          tabBtn.style.display = '';
+        }
+      })
+      .catch(function () {
+        say('전송 또는 확인에 실패했습니다. 로그인 상태를 확인하세요.', true);
+        loginBtn.style.display = '';
+        tabBtn.style.display = '';
+      })
+      .then(function () { btn.disabled = false; });
+  });
+
+  tabBtn.addEventListener('click', function () {
+    var data = collect(); if (!data) return;
+    var f = document.createElement('form');
+    f.action = WEBAPP_URL; f.method = 'POST'; f.target = '_blank'; f.style.display = 'none';
+    var i = document.createElement('input');
+    i.type = 'hidden'; i.name = 'payload'; i.value = JSON.stringify(data);
+    f.appendChild(i);
+    document.body.appendChild(f);
+    f.submit();
+    setTimeout(function () { f.remove(); }, 1000);
     say('새 탭으로 제출했습니다. 그 탭에 "제출되었습니다"가 보이면 성공입니다.');
   });
 })();
