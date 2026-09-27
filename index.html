@@ -1,40 +1,240 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>나를 소개합니다</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: 80px auto;
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    h1 {
-      margin-bottom: 10px;
-    }
-    p {
-      line-height: 1.6;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수행평가지 사전 확인</title>
+<style>
+  :root{
+    --ink:#16233A; --paper:#F7F5EF; --card:#FFFFFF; --line:#E2DFD5;
+    --muted:#55606F; --teal:#2E7D74; --danger:#B4452F;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:24px 16px; background:var(--paper); color:var(--ink);
+    font-family:'Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;
+    line-height:1.6; font-size:16px;
+  }
+  .wrap{max-width:960px; margin:0 auto}
+  header{margin-bottom:28px}
+  h1{font-size:26px; margin:0 0 6px}
+  .sub{color:var(--muted); font-size:15px; margin:0}
+  section{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:24px; margin-bottom:24px;
+  }
+  h2{font-size:20px; margin:0 0 4px; display:flex; align-items:center; gap:10px}
+  .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:50%; background:var(--ink);
+    color:var(--paper); font-size:15px; flex:none;
+  }
+  .hint{color:var(--muted); font-size:14px; margin:6px 0 16px}
+  .frame{border:1px solid var(--line); border-radius:10px; overflow:hidden; height:520px; background:#fff}
+  .frame iframe{width:100%; height:100%; border:0; display:block}
+  .badge{display:inline-block; padding:6px 12px; border-radius:999px; font-size:14px; font-weight:700; margin-bottom:12px}
+  .wait{background:#EFEAD9; color:var(--muted)}
+  .ok{background:#DCEEE9; color:var(--teal)}
+  .bad{background:#F6E0DA; color:var(--danger)}
+  label{display:block; font-weight:700; font-size:14px; margin:14px 0 6px}
+  input[type=text], textarea{
+    width:100%; padding:11px 13px; border:1px solid var(--line);
+    border-radius:9px; font:inherit; font-size:15px; background:#fff; color:var(--ink);
+  }
+  textarea{min-height:80px; resize:vertical}
+  button{
+    font:inherit; font-weight:700; padding:12px 22px; border-radius:10px;
+    border:1px solid var(--ink); background:var(--ink); color:var(--paper);
+    cursor:pointer; margin:16px 8px 0 0;
+  }
+  button.ghost{background:transparent; color:var(--ink)}
+  ol,ul{padding-left:22px; margin:10px 0}
+  li{margin:6px 0}
+  code{background:#F0EDE2; padding:2px 6px; border-radius:5px; font-family:Consolas,monospace; font-size:14px}
+  .log{margin-top:18px; font-size:14px}
+  .log div{padding:9px 12px; border-left:3px solid var(--teal); background:#F4F2EA; margin-bottom:6px; word-break:break-all}
+  .log div.bad{border-left-color:var(--danger); background:#FBF0ED}
+  .note{background:#FBF4E0; border:1px solid #E8D9A8; border-radius:10px; padding:14px 16px; font-size:14px; margin-top:16px}
+  .step{background:#EDF4F2; border:1px solid #BFDAD5; border-radius:10px; padding:14px 16px; font-size:14px; margin-top:16px}
+  .row{display:flex; gap:14px; flex-wrap:wrap}
+  .row > *{flex:1; min-width:200px}
+  @media (max-width:600px){ body{padding:16px 12px} section{padding:18px} .frame{height:420px} }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>안녕하세요 👋</h1>
-    <p>저는 jbs371입니다.</p>
-    <p>이곳은 저를 소개하는 개인 홈페이지입니다.</p>
-    <p>관심사: 개발, 공부, 기록</p>
-    <p>이메일: example@email.com</p>
+<div class="wrap">
+
+<header>
+  <h1>수행평가지 사전 확인</h1>
+  <p class="sub">두 가지만 확인합니다 — 페이지 안에서 CODAP이 열리는가, 입력한 내용이 스프레드시트로 넘어가는가.</p>
+</header>
+
+<!-- ───────── 1. CODAP ───────── -->
+<section>
+  <h2><span class="num">1</span> CODAP이 이 페이지 안에서 열리는가</h2>
+  <p class="hint">CODAP은 프로그램이 커서 <b>처음 뜰 때 10~20초</b> 걸립니다. 흰 화면이어도 30초는 기다려 주세요.</p>
+  <div id="codapBadge" class="badge wait">불러오는 중… (0초)</div>
+  <div id="fileWarn" class="note" style="display:none">
+    <b>이 파일은 컴퓨터에 저장된 파일로 열려 있습니다.</b>
+    브라우저가 로컬 파일 안에서는 외부 사이트의 저장 기능을 막아, 흰 화면만 나올 수 있습니다.
+    아래 <b>새 창에서 CODAP 열기</b>는 이 경우에도 정상 동작합니다.
   </div>
+  <div class="frame">
+    <iframe id="codapFrame" src="https://codap.concord.org/app/" title="CODAP"></iframe>
+  </div>
+  <button id="codapWindow" class="ghost">새 창에서 CODAP 열기</button>
+  <button id="codapReload" class="ghost">다시 불러오기</button>
+</section>
+
+<!-- ───────── 2. 스프레드시트 전송 ───────── -->
+<section>
+  <h2><span class="num">2</span> 입력한 내용이 스프레드시트로 넘어가는가</h2>
+  <p class="hint">제출을 누르면 <b>새 탭</b>이 열리면서 저장되고, 그 탭에 "제출되었습니다" 화면이 뜹니다.</p>
+
+  <div class="step">
+    <b>학교(Workspace) 계정이라 도메인 제한이 걸려 있어도 이 방식은 동작합니다.</b>
+    다만 제출하는 사람이 <u>학교 구글 계정으로 로그인되어 있어야</u> 합니다.
+    그래서 제출 전에 아래 <b>1단계 로그인 확인</b>을 한 번 눌러 주세요.
+  </div>
+
+  <label for="url">웹 앱 URL (…/exec)</label>
+  <input type="text" id="url" placeholder="https://script.google.com/a/macros/학교도메인/s/AKfy...../exec">
+
+  <button id="openBtn" class="ghost">1단계 · 로그인 확인 (새 탭)</button>
+
+  <div class="row" style="margin-top:20px">
+    <div>
+      <label for="sid">학번</label>
+      <input type="text" id="sid" placeholder="10203">
+    </div>
+    <div>
+      <label for="sname">이름</label>
+      <input type="text" id="sname" placeholder="홍길동">
+    </div>
+  </div>
+  <label for="memo">메모 (아무 문장이나)</label>
+  <textarea id="memo" placeholder="전송 확인용 테스트입니다."></textarea>
+
+  <button id="sendBtn">2단계 · 제출하기 (새 탭에서 저장)</button>
+
+  <div class="log" id="log"></div>
+
+  <div class="note">
+    <b>"제출되었습니다" 대신 구글 로그인 화면이 뜬다면</b> — 그 화면에서 학교 계정으로 로그인한 뒤,
+    이 페이지로 돌아와 <b>다시 제출</b>하세요. 한 번 로그인하면 그 다음부터는 바로 저장됩니다.
+  </div>
+</section>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- 1. CODAP ---------- */
+  var badge = document.getElementById('codapBadge');
+  var frame = document.getElementById('codapFrame');
+  var codapLoaded = false;
+  var secs = 0;
+
+  if (location.protocol === 'file:') {
+    document.getElementById('fileWarn').style.display = '';
+  }
+
+  var tick = setInterval(function () {
+    secs += 1;
+    if (!codapLoaded) badge.textContent = '불러오는 중… (' + secs + '초)';
+    if (secs >= 30) {
+      clearInterval(tick);
+      if (!codapLoaded) {
+        badge.className = 'badge bad';
+        badge.textContent = '30초 동안 열리지 않았습니다 — 아래 [새 창에서 CODAP 열기]로 확인해 보세요';
+      }
+    }
+  }, 1000);
+
+  frame.addEventListener('load', function () {
+    codapLoaded = true;
+    badge.className = 'badge ok';
+    badge.textContent = '주소는 불러왔습니다 (' + secs + '초). 화면에 CODAP 메뉴가 보이는지 눈으로 확인하세요.';
+  });
+
+  document.getElementById('codapWindow').addEventListener('click', function () {
+    window.open('https://codap.concord.org/app/', '_blank');
+  });
+  document.getElementById('codapReload').addEventListener('click', function () {
+    codapLoaded = false; secs = 0;
+    badge.className = 'badge wait';
+    badge.textContent = '다시 불러오는 중… (0초)';
+    frame.src = 'https://codap.concord.org/app/?t=' + Date.now();
+  });
+
+  /* ---------- 2. 전송 ---------- */
+  var KEY = 'codap_probe_url_v3';
+  var urlInput = document.getElementById('url');
+  var log = document.getElementById('log');
+
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved) urlInput.value = saved;
+  } catch (e) {}
+
+  function say(msg, bad) {
+    var d = document.createElement('div');
+    if (bad) d.className = 'bad';
+    var t = new Date();
+    var p = function (n) { return ('0' + n).slice(-2); };
+    d.textContent = '[' + p(t.getHours()) + ':' + p(t.getMinutes()) + ':' + p(t.getSeconds()) + '] ' + msg;
+    log.insertBefore(d, log.firstChild);
+  }
+
+  function getUrl() {
+    var u = urlInput.value.trim();
+    if (!u) { say('웹 앱 URL을 먼저 붙여넣으세요.', true); return null; }
+    if (u.indexOf('script.google.com') < 0 || u.indexOf('/exec') < 0) {
+      say('주소가 이상합니다. script.google.com 으로 시작하고 /exec 로 끝나야 합니다.', true);
+      return null;
+    }
+    try { localStorage.setItem(KEY, u); } catch (e) {}
+    return u;
+  }
+
+  document.getElementById('openBtn').addEventListener('click', function () {
+    var u = getUrl();
+    if (!u) return;
+    window.open(u, '_blank');
+    say('새 탭을 열었습니다. "연결 확인 완료" 화면이 보이면 준비 끝입니다. 로그인 화면이 뜨면 로그인하세요.');
+  });
+
+  document.getElementById('sendBtn').addEventListener('click', function () {
+    var u = getUrl();
+    if (!u) return;
+
+    var sid = document.getElementById('sid').value.trim();
+    var name = document.getElementById('sname').value.trim();
+    var memo = document.getElementById('memo').value.trim();
+    if (!sid || !name) { say('학번과 이름을 입력하세요.', true); return; }
+
+    var payload = JSON.stringify({ '학번': sid, '이름': name, '메모': memo });
+
+    // 새 탭으로 POST — 최상위 이동이라 구글 로그인 세션이 그대로 쓰입니다
+    var form = document.createElement('form');
+    form.action = u;
+    form.method = 'POST';
+    form.target = '_blank';
+    form.style.display = 'none';
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'payload';
+    input.value = payload;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(function () { form.remove(); }, 1000);
+
+    say('새 탭으로 제출했습니다. 그 탭에 "제출되었습니다"가 보이면 성공입니다.');
+  });
+})();
+</script>
 </body>
 </html>
-출처: https://recording-it.tistory.com/127 [나를 위한 꾸준한 기록 - 다시개발:티스토리]
