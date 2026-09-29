@@ -3,274 +3,314 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>수행평가지 사전 확인</title>
+<title>데이터 분석 활동지</title>
 <style>
   :root{
-    --ink:#16233A; --paper:#F7F5EF; --card:#FFFFFF; --line:#E2DFD5;
-    --muted:#55606F; --teal:#2E7D74; --danger:#B4452F;
+    --ink:#16233A; --paper:#F7F5EF; --card:#FFFFFF; --line:#DCD8CE;
+    --muted:#5A6472; --accent:#2E7D74; --danger:#B4452F;
   }
   *{box-sizing:border-box}
+  html,body{margin:0; padding:0}
   body{
-    margin:0; padding:24px 16px; background:var(--paper); color:var(--ink);
+    background:var(--paper); color:var(--ink);
     font-family:'Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;
-    line-height:1.6; font-size:16px;
+    font-size:16px; line-height:1.6;
   }
-  .wrap{max-width:960px; margin:0 auto}
-  header{margin-bottom:28px}
-  h1{font-size:26px; margin:0 0 6px}
-  .sub{color:var(--muted); font-size:15px; margin:0}
-  section{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:24px; margin-bottom:24px}
-  h2{font-size:20px; margin:0 0 4px; display:flex; align-items:center; gap:10px}
-  .num{display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px;
-       border-radius:50%; background:var(--ink); color:var(--paper); font-size:15px; flex:none}
-  .hint{color:var(--muted); font-size:14px; margin:6px 0 16px}
-  .frame{border:1px solid var(--line); border-radius:10px; overflow:hidden; height:520px; background:#fff}
+ 
+  /* ───── 상단 ───── */
+  .top{
+    position:sticky; top:0; z-index:30; background:var(--ink); color:var(--paper);
+    padding:11px 20px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .top h1{font-size:17px; margin:0; font-weight:700; letter-spacing:.3px}
+  .top .who{margin-left:auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .top label{font-size:13.5px; color:#A9BAD4}
+  .top input{
+    padding:7px 11px; border-radius:8px; border:1px solid #3A4C70;
+    background:#1E3053; color:var(--paper); font:inherit; font-size:15px;
+  }
+  #sid{width:110px} #sname{width:110px}
+  .top input.err{border-color:#E08C7A; background:#3A2320}
+  .warn{font-size:13px; color:#F0B8A8; width:100%; text-align:right; margin:0}
+  .saved{font-size:12.5px; color:#8FA2C0}
+ 
+  .wrap{max-width:1500px; margin:0 auto; padding:18px 16px 70px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:13px;
+        padding:18px 20px; margin-bottom:18px}
+  .card > h2{font-size:17px; margin:0 0 3px; display:flex; align-items:center; gap:9px}
+  .card > h2 .n{display:inline-flex; align-items:center; justify-content:center;
+    width:25px; height:25px; border-radius:50%; background:var(--ink); color:var(--paper);
+    font-size:14px; flex:none}
+  .card > p.lead{color:var(--muted); font-size:14px; margin:0 0 13px}
+  .card > h2 + p.lead{margin-top:4px}
+ 
+  /* ───── CODAP ───── */
+  .codap-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+  .codap-head .lead{margin:0; color:var(--muted); font-size:14px; flex:1; min-width:240px}
+  .btn{font:inherit; font-size:14px; font-weight:700; padding:8px 15px; border-radius:9px;
+       border:1px solid var(--ink); background:transparent; color:var(--ink); cursor:pointer}
+  .btn:hover{background:#EFEDE6}
+  .frame{border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff;
+         height:74vh; min-height:520px}
   .frame iframe{width:100%; height:100%; border:0; display:block}
-  .badge{display:inline-block; padding:6px 12px; border-radius:999px; font-size:14px; font-weight:700; margin-bottom:12px}
-  .wait{background:#EFEAD9; color:var(--muted)}
-  .ok{background:#DCEEE9; color:var(--teal)}
-  .bad{background:#F6E0DA; color:var(--danger)}
-  label{display:block; font-weight:700; font-size:14px; margin:14px 0 6px}
-  input[type=text], textarea{
-    width:100%; padding:11px 13px; border:1px solid var(--line);
-    border-radius:9px; font:inherit; font-size:15px; background:#fff; color:var(--ink);
+ 
+  body.zoom .top, body.zoom .card:not(.codap), body.zoom .wrap > .foot{display:none}
+  body.zoom .wrap{max-width:none; padding:0}
+  body.zoom .card.codap{margin:0; border:0; border-radius:0; padding:8px 10px}
+  body.zoom .frame{height:calc(100vh - 62px); border-radius:6px}
+ 
+  /* ───── 서술 ───── */
+  .q{margin-bottom:20px}
+  .q:last-child{margin-bottom:6px}
+  .q label{font-weight:700; font-size:15.5px; display:block; margin-bottom:2px}
+  .q .help{font-size:13.5px; color:var(--muted); margin:0 0 7px}
+  .q .help b{color:var(--ink)}
+  textarea{
+    width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:9px;
+    font:inherit; font-size:15px; background:#fff; color:var(--ink);
+    resize:vertical; min-height:92px; line-height:1.6;
   }
-  textarea{min-height:80px; resize:vertical}
-  button{font:inherit; font-weight:700; padding:12px 22px; border-radius:10px;
-         border:1px solid var(--ink); background:var(--ink); color:var(--paper);
-         cursor:pointer; margin:16px 8px 0 0}
-  button.ghost{background:transparent; color:var(--ink)}
-  button:disabled{opacity:.4; cursor:not-allowed}
-  .log{margin-top:18px; font-size:14px}
-  .log div{padding:9px 12px; border-left:3px solid var(--teal); background:#F4F2EA; margin-bottom:6px; word-break:break-all}
-  .log div.bad{border-left-color:var(--danger); background:#FBF0ED}
-  .note{background:#FBF4E0; border:1px solid #E8D9A8; border-radius:10px; padding:14px 16px; font-size:14px; margin-top:16px}
-  .row{display:flex; gap:14px; flex-wrap:wrap}
-  .row > *{flex:1; min-width:200px}
-  @media (max-width:600px){ body{padding:16px 12px} section{padding:18px} .frame{height:420px} }
+  textarea:focus{outline:2px solid #BFD8D5; outline-offset:1px}
+  .meta{display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-top:3px}
+  .meta .tip{color:var(--danger)}
+  .missing{border-color:var(--danger) !important; background:#FDF7F5}
+ 
+  /* ───── 저장 ───── */
+  .foot{text-align:center; padding:6px 0 0}
+  .save{background:var(--ink); color:var(--paper); border:1px solid var(--ink);
+    font:inherit; font-weight:700; font-size:17px; padding:15px 38px; border-radius:11px; cursor:pointer}
+  .note{margin-top:10px; font-size:13.5px; color:var(--muted)}
+  .alert{margin:14px auto 0; max-width:640px; font-size:14.5px; padding:11px 15px;
+         border-radius:10px; display:none; text-align:left}
+  .alert.show{display:block}
+  .alert.bad{background:#F6E0DA; color:var(--danger); border:1px solid #E7C2B8}
+ 
+  #stamp{display:none}
+ 
+  /* ───── 인쇄(PDF) ───── */
+  @media print{
+    body{background:#fff; font-size:11pt}
+    .top{position:static; background:#fff; color:#000; padding:0 0 8px; border-bottom:2px solid #000; display:block}
+    .top h1{font-size:15pt; display:inline}
+    .top .who{display:inline; margin-left:14px; font-size:11pt}
+    .top label{color:#000}
+    .top input{background:#fff; color:#000; border:0; border-bottom:1px solid #000;
+               border-radius:0; padding:0 4px; font-size:11pt}
+    .top .saved, .warn{display:none}
+    .wrap{max-width:none; padding:10px 0 0}
+    .card{border:0; padding:0; margin:0 0 12px}
+    .card.codap, .foot{display:none !important}
+    .card > h2 .n{background:#000; color:#fff; width:20px; height:20px; font-size:10pt}
+    .card > h2{font-size:12pt}
+    .q{margin-bottom:13px; page-break-inside:avoid}
+    .q label{font-size:11.5pt}
+    .q .help, .meta{display:none}
+    textarea{border:1px solid #B8B8B8; border-radius:4px; min-height:0; font-size:10.5pt; padding:7px 9px}
+    #stamp{display:block; position:fixed; left:0; bottom:0; font-size:8pt; color:#666}
+    @page{size:A4; margin:15mm 16mm}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-
-<header>
-  <h1>수행평가지 사전 확인</h1>
-  <p class="sub">CODAP이 페이지 안에서 열리는가, 입력한 내용이 스프레드시트로 조용히 넘어가는가.</p>
-</header>
-
-<!-- ───────── 1. CODAP ───────── -->
-<section>
-  <h2><span class="num">1</span> CODAP</h2>
-  <p class="hint">처음 뜰 때 10~20초 걸립니다. 흰 화면이어도 30초는 기다려 주세요.</p>
-  <div id="codapBadge" class="badge wait">불러오는 중… (0초)</div>
-  <div id="fileWarn" class="note" style="display:none">
-    <b>이 파일은 컴퓨터에 저장된 파일(file://)로 열려 있습니다.</b>
-    브라우저가 로컬 파일 안에서는 외부 사이트의 저장 기능을 막아, CODAP이 흰 화면으로 멈출 수 있습니다.
-    웹 주소로 올려서 쓰면 이 문제가 없습니다.
+ 
+<div class="top">
+  <h1>데이터 분석 활동지</h1>
+  <div class="who">
+    <label for="sid">학번</label><input type="text" id="sid" inputmode="numeric" placeholder="20501" autocomplete="off">
+    <label for="sname">이름</label><input type="text" id="sname" placeholder="홍길동" autocomplete="off">
+    <span class="saved" id="saved"></span>
   </div>
-  <div class="frame">
-    <iframe id="codapFrame" src="https://codap.concord.org/app/" title="CODAP"></iframe>
-  </div>
-  <button id="codapWindow" class="ghost">새 창에서 CODAP 열기</button>
-  <button id="codapReload" class="ghost">다시 불러오기</button>
-</section>
-
-<!-- ───────── 2. 전송 ───────── -->
-<section>
-  <h2><span class="num">2</span> 스프레드시트로 전송</h2>
-  <p class="hint">제출하면 새 탭 없이 조용히 저장되고, 저장된 줄 번호를 확인해서 보여 줍니다.</p>
-
-  <div id="conn" class="badge wait">연결 확인 중…</div>
-
-  <div class="row">
-    <div>
-      <label for="sid">학번</label>
-      <input type="text" id="sid" placeholder="10203">
-    </div>
-    <div>
-      <label for="sname">이름</label>
-      <input type="text" id="sname" placeholder="홍길동">
-    </div>
-  </div>
-  <label for="memo">메모</label>
-  <textarea id="memo" placeholder="전송 확인용 테스트입니다."></textarea>
-
-  <button id="sendBtn">제출하기</button>
-  <button id="loginBtn" class="ghost" style="display:none">구글 로그인하기 (새 탭)</button>
-  <button id="tabBtn" class="ghost" style="display:none">새 탭으로 제출 (예비용)</button>
-
-  <div class="log" id="log"></div>
-</section>
-
+  <p class="warn" id="warn"></p>
 </div>
-
+ 
+<div class="wrap">
+ 
+  <!-- 1. CODAP -->
+  <div class="card codap">
+    <div class="codap-head">
+      <h2 style="margin:0"><span class="n">1</span>데이터 넣고 시각화하기</h2>
+      <p class="lead">내 데이터 파일을 아래 빈 공간에 끌어다 놓으세요. <b>표와 그래프 창은 모서리를 끌어 크게</b> 늘려 놓고 작업합니다.</p>
+      <button class="btn" id="zoom">크게 보기</button>
+      <button class="btn" id="newwin">새 창으로 열기</button>
+    </div>
+    <div class="frame"><iframe id="codap" src="https://codap.concord.org/app/" title="CODAP"></iframe></div>
+  </div>
+ 
+  <!-- 2. 서술 -->
+  <div class="card">
+    <h2><span class="n">2</span>분석 기록</h2>
+    <p class="lead">네 칸 모두 채워야 저장됩니다.</p>
+ 
+    <div class="q">
+      <label for="q1">① 데이터 파일로 분석하고자 하는 내용</label>
+      <p class="help">무엇을 알아보려고 이 데이터를 골랐나요? <b>궁금한 점을 문장으로</b> 적으세요.</p>
+      <textarea id="q1" data-label="분석하고자 하는 내용"></textarea>
+      <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
+    </div>
+ 
+    <div class="q">
+      <label for="q2">② 데이터 분석을 위해 필요한 주요 속성</label>
+      <p class="help">어떤 열(속성)을 사용했나요? <b>고른 이유</b>도 함께 적으세요.</p>
+      <textarea id="q2" data-label="주요 속성"></textarea>
+      <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
+    </div>
+ 
+    <div class="q">
+      <label for="q3">③ 데이터를 시각화한 후 분석한 결과</label>
+      <p class="help">어떤 그래프로 보았고 무엇이 보였나요? <b>숫자를 넣어</b> 적으세요.</p>
+      <textarea id="q3" data-label="분석 결과" style="min-height:130px"></textarea>
+      <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
+    </div>
+ 
+    <div class="q">
+      <label for="q4">④ 느낀 점</label>
+      <p class="help">
+        <b>"신기했다", "재밌었다" 같은 표현은 쓰지 않습니다.</b>
+        새로 알게 된 것, 예상과 달랐던 점, 데이터를 다루며 어려웠던 점, 더 알아보고 싶은 것처럼
+        <b>의미 있는 내용</b>을 적으세요. <span style="color:var(--accent)">이 칸은 점수에 반영하지 않습니다.</span>
+      </p>
+      <textarea id="q4" data-label="느낀 점"></textarea>
+      <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
+    </div>
+  </div>
+ 
+  <!-- 3. 저장 -->
+  <div class="foot">
+    <button class="save" id="save">PDF로 저장</button>
+    <p class="note">인쇄 창이 열리면 <b>대상</b>을 <b>PDF로 저장</b>으로 바꾸고 저장하세요.</p>
+    <div class="alert" id="alert"></div>
+  </div>
+ 
+</div>
+ 
+<div id="stamp"></div>
+ 
 <script>
 (function () {
   "use strict";
-
-  /* ══════════════════════════════════════════════════════════
-     설정 — 배포 주소를 바꿀 때만 이 한 줄을 고치세요
-     ══════════════════════════════════════════════════════════ */
-  var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxiQpYE7w_9GgAiB01bCTzKCA9H5d6-NNj8kXsVC7YprNDqzO2dMejbfkZ1sqwW-FTh/exec';
-
-
-  /* ═══════ 1. CODAP ═══════ */
-  var badge = document.getElementById('codapBadge');
-  var frame = document.getElementById('codapFrame');
-  var codapLoaded = false, secs = 0;
-
-  if (location.protocol === 'file:') document.getElementById('fileWarn').style.display = '';
-
-  var tick = setInterval(function () {
-    secs++;
-    if (!codapLoaded) badge.textContent = '불러오는 중… (' + secs + '초)';
-    if (secs >= 30) {
-      clearInterval(tick);
-      if (!codapLoaded) {
-        badge.className = 'badge bad';
-        badge.textContent = '30초 동안 열리지 않았습니다 — [새 창에서 CODAP 열기]로 확인해 보세요';
-      }
+ 
+  var SID_MIN = 20501, SID_MAX = 20835;   // 학번 범위
+  var BAN = ['신기', '재밌', '재미있', '재미 있'];
+  var QS = ['q1', 'q2', 'q3', 'q4'];
+  var $ = function (id) { return document.getElementById(id); };
+ 
+  /* ── 임시 저장 ── */
+  var KEY = 'data_worksheet_v1', timer = null;
+ 
+  function save() {
+    try {
+      var o = { sid: $('sid').value, name: $('sname').value };
+      QS.forEach(function (q) { o[q] = $(q).value; });
+      localStorage.setItem(KEY, JSON.stringify(o));
+      var d = new Date(), p = function (n) { return ('0' + n).slice(-2); };
+      $('saved').textContent = '자동 저장 ' + p(d.getHours()) + ':' + p(d.getMinutes());
+    } catch (e) { $('saved').textContent = ''; }
+  }
+  function queue() { clearTimeout(timer); timer = setTimeout(save, 700); }
+  function load() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!o) return;
+      $('sid').value = o.sid || '';
+      $('sname').value = o.name || '';
+      QS.forEach(function (q) { if (o[q]) $(q).value = o[q]; });
+      QS.forEach(refresh);
+      $('saved').textContent = '이전 내용을 불러왔습니다';
+    } catch (e) {}
+  }
+ 
+  /* ── 학번 검사 ── */
+  function sidError() {
+    var v = $('sid').value.trim();
+    if (!v) return '학번을 입력하세요.';
+    if (!/^\d{5}$/.test(v)) return '학번은 5자리 숫자입니다. (예: 20501)';
+    var n = parseInt(v, 10);
+    if (n < SID_MIN || n > SID_MAX) return '학번은 ' + SID_MIN + ' ~ ' + SID_MAX + ' 사이여야 합니다.';
+    var no = n % 100;
+    if (no < 1 || no > 35) return '학번 뒤 두 자리(번호)는 01~35 입니다.';
+    return '';
+  }
+ 
+  function checkSid(silent) {
+    var msg = sidError();
+    var empty = !$('sid').value.trim();
+    $('sid').classList.toggle('err', !!msg && !empty);
+    $('warn').textContent = (silent && empty) ? '' : msg;
+    return !msg;
+  }
+  $('sid').addEventListener('input', function () { checkSid(true); queue(); });
+  $('sid').addEventListener('blur', function () { checkSid(true); });
+  $('sname').addEventListener('input', queue);
+ 
+  /* ── 서술칸 ── */
+  function refresh(q) {
+    var el = $(q);
+    var box = el.parentNode;
+    var cnt = box.querySelector('.cnt');
+    var tip = box.querySelector('.tip');
+    var v = el.value.trim();
+    cnt.textContent = v.length ? v.length + '자' : '';
+    el.classList.remove('missing');
+ 
+    if (q === 'q4') {
+      var hit = BAN.filter(function (w) { return v.indexOf(w) >= 0; });
+      tip.textContent = hit.length ? '‘' + hit.join('’, ‘') + '’ 같은 표현 말고, 무엇을 알게 되었는지 써 보세요.' : '';
     }
-  }, 1000);
-
-  frame.addEventListener('load', function () {
-    codapLoaded = true;
-    badge.className = 'badge ok';
-    badge.textContent = '주소를 불러왔습니다 (' + secs + '초). 화면에 CODAP 메뉴가 보이는지 확인하세요.';
+  }
+  QS.forEach(function (q) {
+    $(q).addEventListener('input', function () { refresh(q); queue(); });
+    refresh(q);
   });
-
-  document.getElementById('codapWindow').addEventListener('click', function () {
+ 
+  /* ── CODAP ── */
+  $('zoom').addEventListener('click', function () {
+    var on = document.body.classList.toggle('zoom');
+    this.textContent = on ? '작게 보기' : '크게 보기';
+    window.scrollTo(0, 0);
+  });
+  $('newwin').addEventListener('click', function () {
     window.open('https://codap.concord.org/app/', '_blank');
   });
-  document.getElementById('codapReload').addEventListener('click', function () {
-    codapLoaded = false; secs = 0;
-    badge.className = 'badge wait';
-    badge.textContent = '다시 불러오는 중… (0초)';
-    frame.src = 'https://codap.concord.org/app/?t=' + Date.now();
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('zoom')) $('zoom').click();
   });
-
-  /* ═══════ 2. 전송 ═══════ */
-  var conn = document.getElementById('conn');
-  var log = document.getElementById('log');
-  var loginBtn = document.getElementById('loginBtn');
-  var tabBtn = document.getElementById('tabBtn');
-
-  function say(msg, bad) {
-    var d = document.createElement('div');
-    if (bad) d.className = 'bad';
-    var t = new Date(), p = function (n) { return ('0' + n).slice(-2); };
-    d.textContent = '[' + p(t.getHours()) + ':' + p(t.getMinutes()) + ':' + p(t.getSeconds()) + '] ' + msg;
-    log.insertBefore(d, log.firstChild);
+ 
+  /* ── 저장(PDF) ── */
+  function alertBad(msg) {
+    var a = $('alert');
+    a.className = 'alert show bad';
+    a.innerHTML = msg;
   }
-
-  function setConn(kind, text) {
-    conn.className = 'badge ' + kind;
-    conn.textContent = text;
-  }
-
-  /* JSONP — 로그인 여부와 저장 결과를 되묻는다 (CORS 제약 없음) */
-  var seq = 0;
-  function ask(params, timeoutMs) {
-    return new Promise(function (resolve, reject) {
-      var cb = '__cb' + (++seq) + '_' + Date.now();
-      var sc = document.createElement('script');
-      var done = false;
-
-      window[cb] = function (data) { done = true; cleanup(); resolve(data); };
-      function cleanup() {
-        try { delete window[cb]; } catch (e) { window[cb] = undefined; }
-        if (sc.parentNode) sc.parentNode.removeChild(sc);
-      }
-
-      var qs = ['callback=' + cb, 't=' + Date.now()];
-      Object.keys(params || {}).forEach(function (k) {
-        if (params[k] !== undefined && params[k] !== '') {
-          qs.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
-        }
-      });
-      sc.src = WEBAPP_URL + (WEBAPP_URL.indexOf('?') < 0 ? '?' : '&') + qs.join('&');
-      sc.onerror = function () { if (!done) { cleanup(); reject(new Error('network')); } };
-      document.head.appendChild(sc);
-      setTimeout(function () { if (!done) { cleanup(); reject(new Error('timeout')); } }, timeoutMs || 12000);
-    });
-  }
-
-  function checkConnection() {
-    setConn('wait', '연결 확인 중…');
-    return ask({}, 12000).then(function (d) {
-      if (d && d.ok) {
-        setConn('ok', '연결됨 · 현재 ' + (d.rows || 0) + '건 저장되어 있음');
-        loginBtn.style.display = 'none';
-        tabBtn.style.display = 'none';
-        return true;
-      }
-      setConn('bad', '응답이 이상합니다');
-      return false;
-    }).catch(function () {
-      setConn('bad', '연결 실패 — 구글 로그인이 필요합니다');
-      loginBtn.style.display = '';
-      return false;
-    });
-  }
-
-  checkConnection();
-
-  loginBtn.addEventListener('click', function () {
-    window.open(WEBAPP_URL, '_blank');
-    say('새 탭에서 학교 계정으로 로그인한 뒤, 이 페이지로 돌아오세요.');
-    setTimeout(checkConnection, 5000);
+ 
+  $('save').addEventListener('click', function () {
+    $('alert').className = 'alert';
+ 
+    if (!checkSid(false)) { $('sid').focus(); alertBad(sidError()); return; }
+    if (!$('sname').value.trim()) { $('sname').focus(); alertBad('이름을 입력하세요.'); return; }
+ 
+    var empty = QS.filter(function (q) { return !$(q).value.trim(); });
+    if (empty.length) {
+      empty.forEach(function (q) { $(q).classList.add('missing'); });
+      $(empty[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      alertBad('아직 쓰지 않은 칸이 ' + empty.length + '개 있습니다. 빨갛게 표시된 칸을 채워 주세요.');
+      return;
+    }
+ 
+    var d = new Date(), p = function (n) { return ('0' + n).slice(-2); };
+    var when = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
+               ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+    $('stamp').textContent = '저장 시각  ' + when;
+ 
+    save();
+ 
+    var keep = document.title;
+    document.title = $('sid').value.trim() + '_' + $('sname').value.trim() + '_데이터분석활동지';
+    window.print();
+    setTimeout(function () { document.title = keep; }, 1500);
   });
-
-  function collect() {
-    var sid = document.getElementById('sid').value.trim();
-    var name = document.getElementById('sname').value.trim();
-    var memo = document.getElementById('memo').value.trim();
-    if (!sid || !name) { say('학번과 이름을 입력하세요.', true); return null; }
-    return { '학번': sid, '이름': name, '메모': memo };
-  }
-
-  document.getElementById('sendBtn').addEventListener('click', function () {
-    var data = collect(); if (!data) return;
-
-    var btn = this;
-    btn.disabled = true;
-    say('전송 중…');
-
-    var body = new URLSearchParams();
-    body.append('payload', JSON.stringify(data));
-
-    fetch(WEBAPP_URL, { method: 'POST', mode: 'no-cors', credentials: 'include', body: body })
-      .then(function () { return new Promise(function (r) { setTimeout(r, 1800); }); })
-      .then(function () { return ask({ sid: data['학번'] }, 12000); })
-      .then(function (d) {
-        if (d && d.found) {
-          say('저장 확인 — ' + d.row + '번째 줄 · ' + (d.time || ''));
-          setConn('ok', '연결됨 · 현재 ' + (d.rows || 0) + '건 저장되어 있음');
-        } else {
-          say('보내긴 했는데 시트에서 찾지 못했습니다. 예비용 버튼으로 다시 시도해 보세요.', true);
-          tabBtn.style.display = '';
-        }
-      })
-      .catch(function () {
-        say('전송 또는 확인에 실패했습니다. 로그인 상태를 확인하세요.', true);
-        loginBtn.style.display = '';
-        tabBtn.style.display = '';
-      })
-      .then(function () { btn.disabled = false; });
-  });
-
-  tabBtn.addEventListener('click', function () {
-    var data = collect(); if (!data) return;
-    var f = document.createElement('form');
-    f.action = WEBAPP_URL; f.method = 'POST'; f.target = '_blank'; f.style.display = 'none';
-    var i = document.createElement('input');
-    i.type = 'hidden'; i.name = 'payload'; i.value = JSON.stringify(data);
-    f.appendChild(i);
-    document.body.appendChild(f);
-    f.submit();
-    setTimeout(function () { f.remove(); }, 1000);
-    say('새 탭으로 제출했습니다. 그 탭에 "제출되었습니다"가 보이면 성공입니다.');
-  });
+ 
+  load();
+  checkSid(true);
 })();
 </script>
 </body>
