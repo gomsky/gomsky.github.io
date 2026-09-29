@@ -16,7 +16,7 @@
     font-family:'Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;
     font-size:16px; line-height:1.6;
   }
- 
+
   /* ───── 상단 ───── */
   .top{
     position:sticky; top:0; z-index:30; background:var(--ink); color:var(--paper);
@@ -33,17 +33,17 @@
   .top input.err{border-color:#E08C7A; background:#3A2320}
   .warn{font-size:13px; color:#F0B8A8; width:100%; text-align:right; margin:0}
   .saved{font-size:12.5px; color:#8FA2C0}
- 
+
   .wrap{max-width:1500px; margin:0 auto; padding:18px 16px 70px}
   .card{background:var(--card); border:1px solid var(--line); border-radius:13px;
         padding:18px 20px; margin-bottom:18px}
   .card > h2{font-size:17px; margin:0 0 3px; display:flex; align-items:center; gap:9px}
   .card > h2 .n{display:inline-flex; align-items:center; justify-content:center;
     width:25px; height:25px; border-radius:50%; background:var(--ink); color:var(--paper);
-    font-size:14px; flex:none}
+    font-size:14px; flex:none; margin-right:8px}
   .card > p.lead{color:var(--muted); font-size:14px; margin:0 0 13px}
   .card > h2 + p.lead{margin-top:4px}
- 
+
   /* ───── CODAP ───── */
   .codap-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px}
   .codap-head .lead{margin:0; color:var(--muted); font-size:14px; flex:1; min-width:240px}
@@ -53,12 +53,12 @@
   .frame{border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff;
          height:74vh; min-height:520px}
   .frame iframe{width:100%; height:100%; border:0; display:block}
- 
+
   body.zoom .top, body.zoom .card:not(.codap), body.zoom .wrap > .foot{display:none}
   body.zoom .wrap{max-width:none; padding:0}
   body.zoom .card.codap{margin:0; border:0; border-radius:0; padding:8px 10px}
   body.zoom .frame{height:calc(100vh - 62px); border-radius:6px}
- 
+
   /* ───── 서술 ───── */
   .q{margin-bottom:20px}
   .q:last-child{margin-bottom:6px}
@@ -74,7 +74,7 @@
   .meta{display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-top:3px}
   .meta .tip{color:var(--danger)}
   .missing{border-color:var(--danger) !important; background:#FDF7F5}
- 
+
   /* ───── 저장 ───── */
   .foot{text-align:center; padding:6px 0 0}
   .save{background:var(--ink); color:var(--paper); border:1px solid var(--ink);
@@ -84,9 +84,9 @@
          border-radius:10px; display:none; text-align:left}
   .alert.show{display:block}
   .alert.bad{background:#F6E0DA; color:var(--danger); border:1px solid #E7C2B8}
- 
+
   #stamp{display:none}
- 
+
   /* ───── 인쇄(PDF) ───── */
   @media print{
     body{background:#fff; font-size:11pt}
@@ -99,8 +99,18 @@
     .top .saved, .warn{display:none}
     .wrap{max-width:none; padding:10px 0 0}
     .card{border:0; padding:0; margin:0 0 12px}
-    .card.codap, .foot{display:none !important}
-    .card > h2 .n{background:#000; color:#fff; width:20px; height:20px; font-size:10pt}
+    .foot{display:none !important}
+    /* CODAP 창: 첫 쪽(가로)에 화면 그대로, 크기만 줄여서 */
+    .top, .card.codap{page:wide}
+    .card.codap{break-after:page}
+    .codap-head{margin-bottom:6px}
+    .codap-head .lead, .codap-head .btn{display:none}
+    .frame{width:var(--fw); height:var(--fh); min-height:0; border:1px solid #999; border-radius:0; overflow:hidden}
+    .frame iframe{width:var(--cw); height:var(--ch); transform:scale(var(--cs)); transform-origin:0 0}
+    body.zoom .top{display:block !important}
+    body.zoom .card:not(.codap){display:block !important}
+    body.zoom .wrap{padding:10px 0 0}
+    .card > h2 .n{display:none}
     .card > h2{font-size:12pt}
     .q{margin-bottom:13px; page-break-inside:avoid}
     .q label{font-size:11.5pt}
@@ -108,11 +118,12 @@
     textarea{border:1px solid #B8B8B8; border-radius:4px; min-height:0; font-size:10.5pt; padding:7px 9px}
     #stamp{display:block; position:fixed; left:0; bottom:0; font-size:8pt; color:#666}
     @page{size:A4; margin:15mm 16mm}
+    @page wide{size:A4 landscape; margin:12mm}
   }
 </style>
 </head>
 <body>
- 
+
 <div class="top">
   <h1>데이터 분석 활동지</h1>
   <div class="who">
@@ -122,46 +133,47 @@
   </div>
   <p class="warn" id="warn"></p>
 </div>
- 
+
 <div class="wrap">
- 
+
   <!-- 1. CODAP -->
   <div class="card codap">
     <div class="codap-head">
       <h2 style="margin:0"><span class="n">1</span>데이터 넣고 시각화하기</h2>
-      <p class="lead">내 데이터 파일을 아래 빈 공간에 끌어다 놓으세요. <b>표와 그래프 창은 모서리를 끌어 크게</b> 늘려 놓고 작업합니다.</p>
+      <p class="lead">내 데이터 파일을 아래 빈 공간에 끌어다 놓으세요. <b>표와 그래프 창은 모서리를 끌어 크게</b> 늘려 놓고 작업합니다.
+        <br><b>처음 한 번:</b> CODAP 오른쪽 위 <b>설정(톱니바퀴)</b> → <b>Graphics Acceleration: Turn off</b> — 켜 두면 PDF에서 그래프 점이 사라집니다.</p>
       <button class="btn" id="zoom">크게 보기</button>
       <button class="btn" id="newwin">새 창으로 열기</button>
     </div>
     <div class="frame"><iframe id="codap" src="https://codap.concord.org/app/" title="CODAP"></iframe></div>
   </div>
- 
+
   <!-- 2. 서술 -->
   <div class="card">
     <h2><span class="n">2</span>분석 기록</h2>
     <p class="lead">네 칸 모두 채워야 저장됩니다.</p>
- 
+
     <div class="q">
       <label for="q1">① 데이터 파일로 분석하고자 하는 내용</label>
       <p class="help">무엇을 알아보려고 이 데이터를 골랐나요? <b>궁금한 점을 문장으로</b> 적으세요.</p>
       <textarea id="q1" data-label="분석하고자 하는 내용"></textarea>
       <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
     </div>
- 
+
     <div class="q">
       <label for="q2">② 데이터 분석을 위해 필요한 주요 속성</label>
       <p class="help">어떤 열(속성)을 사용했나요? <b>고른 이유</b>도 함께 적으세요.</p>
       <textarea id="q2" data-label="주요 속성"></textarea>
       <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
     </div>
- 
+
     <div class="q">
       <label for="q3">③ 데이터를 시각화한 후 분석한 결과</label>
       <p class="help">어떤 그래프로 보았고 무엇이 보였나요? <b>숫자를 넣어</b> 적으세요.</p>
       <textarea id="q3" data-label="분석 결과" style="min-height:130px"></textarea>
       <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
     </div>
- 
+
     <div class="q">
       <label for="q4">④ 느낀 점</label>
       <p class="help">
@@ -173,30 +185,31 @@
       <div class="meta"><span class="tip"></span><span class="cnt"></span></div>
     </div>
   </div>
- 
+
   <!-- 3. 저장 -->
   <div class="foot">
     <button class="save" id="save">PDF로 저장</button>
-    <p class="note">인쇄 창이 열리면 <b>대상</b>을 <b>PDF로 저장</b>으로 바꾸고 저장하세요.</p>
+    <p class="note">인쇄 창이 열리면 <b>대상</b>을 <b>PDF로 저장</b>으로 바꾸고, <b>설정 더보기 → 배경 그래픽</b>에 체크한 뒤 저장하세요.<br>
+      미리보기 첫 장에 <b>CODAP 화면(표·그래프 점)</b>이 보이는지 꼭 확인하세요.</p>
     <div class="alert" id="alert"></div>
   </div>
- 
+
 </div>
- 
+
 <div id="stamp"></div>
- 
+
 <script>
 (function () {
   "use strict";
- 
+
   var SID_MIN = 20501, SID_MAX = 20835;   // 학번 범위
   var BAN = ['신기', '재밌', '재미있', '재미 있'];
   var QS = ['q1', 'q2', 'q3', 'q4'];
   var $ = function (id) { return document.getElementById(id); };
- 
+
   /* ── 임시 저장 ── */
   var KEY = 'data_worksheet_v1', timer = null;
- 
+
   function save() {
     try {
       var o = { sid: $('sid').value, name: $('sname').value };
@@ -218,7 +231,7 @@
       $('saved').textContent = '이전 내용을 불러왔습니다';
     } catch (e) {}
   }
- 
+
   /* ── 학번 검사 ── */
   function sidError() {
     var v = $('sid').value.trim();
@@ -230,7 +243,7 @@
     if (no < 1 || no > 35) return '학번 뒤 두 자리(번호)는 01~35 입니다.';
     return '';
   }
- 
+
   function checkSid(silent) {
     var msg = sidError();
     var empty = !$('sid').value.trim();
@@ -241,7 +254,7 @@
   $('sid').addEventListener('input', function () { checkSid(true); queue(); });
   $('sid').addEventListener('blur', function () { checkSid(true); });
   $('sname').addEventListener('input', queue);
- 
+
   /* ── 서술칸 ── */
   function refresh(q) {
     var el = $(q);
@@ -251,7 +264,7 @@
     var v = el.value.trim();
     cnt.textContent = v.length ? v.length + '자' : '';
     el.classList.remove('missing');
- 
+
     if (q === 'q4') {
       var hit = BAN.filter(function (w) { return v.indexOf(w) >= 0; });
       tip.textContent = hit.length ? '‘' + hit.join('’, ‘') + '’ 같은 표현 말고, 무엇을 알게 되었는지 써 보세요.' : '';
@@ -261,7 +274,7 @@
     $(q).addEventListener('input', function () { refresh(q); queue(); });
     refresh(q);
   });
- 
+
   /* ── CODAP ── */
   $('zoom').addEventListener('click', function () {
     var on = document.body.classList.toggle('zoom');
@@ -274,20 +287,37 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && document.body.classList.contains('zoom')) $('zoom').click();
   });
- 
+
+  /* ── CODAP 창을 PDF 가로 쪽에 맞추기 ──
+     창의 실제 크기는 그대로 두고(CODAP이 다시 배치되지 않게) 보이는 크기만 줄인다 */
+  var PRINT_W = 1020, PRINT_H = 600;   // A4 가로 한 쪽에 들어갈 CODAP 영역(px)
+  function fitCodap() {
+    var f = $('codap');
+    var W = f.offsetWidth, H = f.offsetHeight;   // 축소 전 실제 크기
+    if (!W || !H) return;
+    var sc = Math.min(PRINT_W / W, PRINT_H / H, 1);
+    var st = document.documentElement.style;
+    st.setProperty('--cw', W + 'px');
+    st.setProperty('--ch', H + 'px');
+    st.setProperty('--cs', sc);
+    st.setProperty('--fw', Math.floor(W * sc) + 'px');
+    st.setProperty('--fh', Math.floor(H * sc) + 'px');
+  }
+  window.addEventListener('beforeprint', fitCodap);
+
   /* ── 저장(PDF) ── */
   function alertBad(msg) {
     var a = $('alert');
     a.className = 'alert show bad';
     a.innerHTML = msg;
   }
- 
+
   $('save').addEventListener('click', function () {
     $('alert').className = 'alert';
- 
+
     if (!checkSid(false)) { $('sid').focus(); alertBad(sidError()); return; }
     if (!$('sname').value.trim()) { $('sname').focus(); alertBad('이름을 입력하세요.'); return; }
- 
+
     var empty = QS.filter(function (q) { return !$(q).value.trim(); });
     if (empty.length) {
       empty.forEach(function (q) { $(q).classList.add('missing'); });
@@ -295,20 +325,24 @@
       alertBad('아직 쓰지 않은 칸이 ' + empty.length + '개 있습니다. 빨갛게 표시된 칸을 채워 주세요.');
       return;
     }
- 
+
     var d = new Date(), p = function (n) { return ('0' + n).slice(-2); };
     var when = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
                ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
     $('stamp').textContent = '저장 시각  ' + when;
- 
+
     save();
- 
+
     var keep = document.title;
     document.title = $('sid').value.trim() + '_' + $('sname').value.trim() + '_데이터분석활동지';
+    fitCodap();
+    var y = window.scrollY;
+    window.scrollTo(0, 0);          // 스크롤된 상태면 좌측 하단 시각이 PDF에서 빠질 수 있음
     window.print();
+    window.scrollTo(0, y);
     setTimeout(function () { document.title = keep; }, 1500);
   });
- 
+
   load();
   checkSid(true);
 })();
